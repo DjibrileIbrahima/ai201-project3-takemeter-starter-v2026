@@ -1,0 +1,32 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 2,
+  "seed": 42,
+  "held_out": false,
+  "used_definitions": true,
+  "scores": {
+    "n": 2,
+    "accuracy": 1.0,
+    "f1_macro": 1.0,
+    "per_label": {
+      "your_label_here": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "Another post.",
+      "gold": "your_label_here",
+      "predicted": "your_label_here"
+    },
+    {
+      "text": "Paste one post here. Keep the whole post \u2014 don't trim it to fit.",
+      "gold": "your_label_here",
+      "predicted": "your_label_here"
+    }
+  ]
+}
