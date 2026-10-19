@@ -55,10 +55,15 @@ whether you hit them:
 
 <!-- Your criterion. It must name a number. -->
 
-
+**Overall accuracy of at least 0.65 on the held-out test split, on every one
+of the three seeds.**
 
 **Why this target:**
 
+Three labels means a guesser gets about 0.33, so 0.65 is roughly double chance.
+With a test split of only about 30 posts, a single post moves accuracy by about
+3 points, so I set this below what I'd hope for on an average seed so that one
+unlucky split doesn't decide it.
 
 
 ---
@@ -67,10 +72,15 @@ whether you hit them:
 
 <!-- Your criterion. -->
 
-
+**`hot_take` and `reaction` each have an F1 of at least 0.55, and `analysis`
+an F1 of at least 0.60, on every seed.**
 
 **Why this target:**
 
+`analysis` posts have the most distinctive wording (formations, stats, "because"),
+so I expect it to be the easiest to learn. `hot_take` and `reaction` are
+both short, opinionated posts, and with roughly 10 of each in the test split
+their F1 will jump between seeds, so their bar is looser.
 
 
 ---
@@ -79,10 +89,14 @@ whether you hit them:
 
 <!-- Your criterion. -->
 
-
+**No label makes up more than 50% of `labels.csv`, and no label has fewer
+than 45 examples.**
 
 **Why this target:**
 
+Match threads are full of short `reaction` posts, so this
+is the label most likely to swamp the others. Below about 45 examples a label
+lands only 6 or 7 posts in the test split, which is too few to give a stable F1.
 
 
 ---
@@ -91,10 +105,15 @@ whether you hit them:
 
 <!-- Your criterion. -->
 
-
+**Fewer than 1 in 4 true `analysis` posts in the test split are predicted
+as `hot_take`, on every seed.**
 
 **Why this target:**
 
+`analysis` vs `hot_take` is my hardest boundary: both make a claim, and the
+only difference is whether the post explains how its evidence supports it. A
+post that just names a player or formation looks like analysis but isn't. If
+the model misses this boundary, it hasn't learned my main distinction.
 
 
 ---
@@ -103,10 +122,15 @@ whether you hit them:
 
 <!-- Your criterion. -->
 
-
+**The model's most confident third of test predictions is at least 0.15
+more accurate than its least confident third, on every seed.**
 
 **Why this target:**
 
+I expect the obvious cases (a one-line "What a goal!" or a detailed tactical
+breakdown) to be easy and the borderline `analysis`/`hot_take` posts to be
+hard. If confidence doesn't separate those, the model's confidence scores
+can't be used to flag posts for a human to check.
 
 
 ---
