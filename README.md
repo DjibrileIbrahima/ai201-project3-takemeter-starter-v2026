@@ -54,33 +54,50 @@
      The decision rule is worth a point on its own and it's the thing most
      people leave out. Every taxonomy has a hardest boundary. Name yours. -->
 
-### `label_one`
+### `analysis`
 
-**Definition:**
-
-**Example 1:**
->
-
-**Example 2:**
->
-
-### `label_two`
-
-**Definition:**
+**Definition:** A post that makes a point and supports it with a specific,
+checkable observation, explaining how that observation supports the point.
 
 **Example 1:**
->
+> “Since he has been in Milan, on paper we are playing 3-4-2-1, but if you
+> look at games we are very often playing 4-3-3/4-4-2.”
 
 **Example 2:**
->
+> “I don’t think playing Bruno in a double pivot is a bad idea though. He was
+> creating chances from deep ... he’s also excellent at ball progression.”
+
+### `hot_take`
+
+**Definition:** A confident judgment or claim that does not give concrete
+support for its conclusion.
+
+**Example 1:**
+> “Man if this is red then every game I played in high school would be 1 vs 1.”
+
+**Example 2:**
+> “Bruno in double pivot is one of the stupidest ‘experiments’ I’ve seen yet.”
+
+### `reaction`
+
+**Definition:** A brief, immediate response to a specific event or post, mainly
+expressing an emotion or first impression rather than making a broader argument.
+
+**Example 1:**
+> “I think sometimes people forget how good this guy actually is.”
+
+**Example 2:**
+> “It really felt like it was Mbappe vs Argentina.”
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `analysis` and `hot_take`
 
-**The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
+**The decision rule I used every time:** If the post explains how a specific,
+checkable observation supports its claim, label it `analysis`. Merely naming a
+player, formation, or example is not enough. If it mainly asserts a confident
+judgment without that connection, label it `hot_take`. If it is primarily an
+immediate response to the event, label it `reaction`.
 
 
 
