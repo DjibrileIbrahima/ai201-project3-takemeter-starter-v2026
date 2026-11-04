@@ -272,18 +272,17 @@ change one later, its note becomes `pre-labelled by Claude, corrected`.
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
-| Measure | Baseline |
-|---|---|
-| Overall accuracy | 1.000 |
-| Macro F1 | 1.000 |
-| F1 — `your_label_here` | 1.000 |
+Baseline: `facebook/bart-large-mnli` zero-shot, given only my label
+definitions, scored on the same 38 held-out posts (`test_split.csv`, seed 42)
+as the trained model.
 
-| Measure | Baseline | Trained | Difference |
+| Measure | Baseline | Trained (seed 42) | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.237 | 0.605 | +0.368 |
+| Macro F1 | 0.176 | 0.595 | +0.419 |
+| F1 — `analysis` | 0.000 | 0.533 | +0.533 |
+| F1 — `hot_take` | 0.389 | 0.562 | +0.173 |
+| F1 — `reaction` | 0.138 | 0.690 | +0.552 |
 
 **What I predicted before I looked:**
 <!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
@@ -293,7 +292,15 @@ change one later, its note becomes `pre-labelled by Claude, corrected`.
 <!-- If the baseline matched your trained model, your fine-tuning added
      nothing — and that is a real finding, not a failure. Say it plainly. -->
 
-
+The baseline did worse than guessing. 0.237 accuracy is below the 0.33 of a
+random pick and below the 0.42 of always answering `hot_take`. It never got
+a single `analysis` post right: it spread its guesses over `hot_take` and
+`reaction`, and called posts like the Neuer/Golden Ball comparison
+`reaction`. My definitions alone aren't enough for a general model to find
+the line between "backs it up" and "just says it". The 250 labelled
+examples are what taught that, so fine-tuning added a real +0.42 macro F1.
+But the trained model still sits well below my own 0.65 target, so beating
+the baseline is a low bar here. It doesn't mean the model is good.
 
 ---
 
@@ -302,30 +309,58 @@ change one later, its note becomes `pre-labelled by Claude, corrected`.
 <!-- Five criteria across three seeds. The notebook's section 6 prints the
      spread table; the Target and Verdict columns are yours. -->
 
+8 epochs, lr 2e-5, batch 16, CPU. Test split is 38 posts per seed (9
+`analysis`, 16 `hot_take`, 13 `reaction`).
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.65 every seed | 0.605 | 0.500 | 0.553 | MISSED |
+| 2. Per-label F1 | `analysis` ≥ 0.60; `hot_take`, `reaction` ≥ 0.55 | a 0.533 · h 0.562 · r 0.690 | a 0.500 · h 0.550 · r 0.417 | a 0.588 · h 0.541 · r 0.545 | MISSED |
+| 3. Balance | no label > 50%, every label ≥ 45 | 43% max, 57 min | same data | same data | MET |
+| 4. `analysis` → `hot_take` | < 1 in 4 true `analysis` | 4 / 9 | 5 / 9 | 4 / 9 | MISSED |
+| 5. Confidence gap | top third ≥ 0.15 above bottom third | 0.750 vs 0.333 (+0.42) | 0.750 vs 0.417 (+0.33) | 0.750 vs 0.500 (+0.25) | MET |
+
+Macro F1 across seeds: 0.595, 0.489, 0.558. Accuracy moved 0.105 across
+seeds, more than 10 points, which the notebook flags as too small a dataset
+for a stable measure.
 
 ### Confusion matrix
 
 <!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
      An image of a matrix earns nothing. -->
 
-| true \ predicted |  |  |  |
+Seed 42:
+
+| true \ predicted | analysis | hot_take | reaction |
 |---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| **analysis** | 4 | 4 | 1 |
+| **hot_take** | 2 | 9 | 5 |
+| **reaction** | 0 | 3 | 10 |
+
+Summed over all three seeds (114 test predictions):
+
+| true \ predicted | analysis | hot_take | reaction |
+|---|---|---|---|
+| **analysis** | 12 | 13 | 2 |
+| **hot_take** | 5 | 30 | 13 |
+| **reaction** | 0 | 18 | 21 |
 
 **My biggest off-diagonal number, and what it means:**
 <!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
      direction. "7 real analysis posts were called hot_take and only 3 went the
      other way" is a direction, not just an error rate. -->
 
+On seed 42 it's 5 `hot_take` posts called `reaction`, with 3 going the other
+way. Across all three seeds, though, the pattern is that **everything leaks
+into `hot_take`**. 13 real `analysis` posts were called `hot_take` and only
+5 went the other way. 18 real `reaction` posts were called `hot_take`. On
+the boundary I cared most about, the model leans hard toward `hot_take`:
+nearly half of true `analysis` posts (13 of 27) get read as an unsupported
+opinion. `hot_take` is also my biggest label (43%), so it works as the
+model's default when it isn't sure. `analysis` → `reaction` almost never
+happens (2) and `reaction` → `analysis` never does (0), so the model has
+learned that `analysis` is long and argumentative. What it hasn't learned
+is whether the argument is backed by evidence.
 
 
 ---
@@ -337,11 +372,11 @@ change one later, its note becomes `pre-labelled by Claude, corrected`.
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy | ≥ 0.65 on every seed | MISSED | 0.605 / 0.500 / 0.553. No seed reached it, and the best was 4.5 points short |
+| 2 | Per-label F1 | `analysis` ≥ 0.60, others ≥ 0.55, every seed | MISSED | `analysis` never reached 0.60 (best 0.588). `reaction` fell to 0.417 on seed 7, and `hot_take` to 0.541 on seed 2024 |
+| 3 | Balance | no label > 50%, every label ≥ 45 | MET | `hot_take` 43% is the largest, and `analysis` 57 the smallest. A property of `labels.csv`, so it holds on every seed |
+| 4 | `analysis` → `hot_take` | < 1 in 4 of true `analysis` | MISSED | 4/9, 5/9, 4/9, roughly double the allowed rate on every seed |
+| 5 | Confidence gap | top third ≥ 0.15 more accurate than bottom third | MET | Gaps of +0.42, +0.33, +0.25. All clear 0.15, though the gap shrinks as the least-sure third gets luckier |
 
 **Diagnoses**
 
@@ -354,7 +389,31 @@ change one later, its note becomes `pre-labelled by Claude, corrected`.
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
 
+<!-- TODO: add the agreement-report evidence once data/staff_labels.csv
+     arrives and agreement.py has run. The diagnoses below use the evidence
+     available so far. -->
 
+**Criterion 4 (`analysis` → `hot_take`): a boundary applied inconsistently.**
+The errors run one way: 13 `analysis` → `hot_take` against 5 the other way
+across seeds. A genuinely hard pair would blur in both directions. My own
+labels show the inconsistency directly. When I labelled 20 posts cold, I
+called a post that uses the ages of past winners as evidence `hot_take`. I
+called "the kinda shot you take in real life and sail it 20 yards over"
+`analysis`, though it has no checkable evidence at all, and that post sits
+in the test split as a gold `analysis`. The other 230 labels were
+pre-labelled under a stricter reading of the same rule. So the training data
+holds two versions of the `analysis` boundary, and the model learned roughly
+"long and argumentative" rather than "backed by evidence".
+
+**Criteria 1 and 2 (accuracy, per-label F1): too little data for a stable
+measure, on top of the boundary above.** With 38 test posts, one post moves
+accuracy by 2.6 points, and accuracy moved 10.5 points between seeds. With 9
+`analysis` posts per test split, one post moves its F1 by about 0.06, so
+0.533 → 0.588 across seeds is a single post. `reaction` swinging from 0.690
+to 0.417 is the same story: 13 test posts, and on seed 7 eight of them were
+called `hot_take`. That second leak (18 `reaction` → `hot_take` across seeds)
+is where `reaction` blurs into `hot_take` when a reaction carries a verdict
+("Couldn't be more deserved, H."), which is my hard case 3 again.
 
 ---
 

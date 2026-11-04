@@ -1,32 +1,224 @@
 {
   "model": "facebook/bart-large-mnli",
-  "n": 2,
+  "n": 38,
   "seed": 42,
-  "held_out": false,
+  "held_out": true,
   "used_definitions": true,
   "scores": {
-    "n": 2,
-    "accuracy": 1.0,
-    "f1_macro": 1.0,
+    "n": 38,
+    "accuracy": 0.23684210526315788,
+    "f1_macro": 0.1756066411238825,
     "per_label": {
-      "your_label_here": {
-        "precision": 1.0,
-        "recall": 1.0,
-        "f1": 1.0,
-        "support": 2
+      "analysis": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 9
+      },
+      "hot_take": {
+        "precision": 0.35,
+        "recall": 0.4375,
+        "f1": 0.38888888888888884,
+        "support": 16
+      },
+      "reaction": {
+        "precision": 0.125,
+        "recall": 0.15384615384615385,
+        "f1": 0.13793103448275862,
+        "support": 13
       }
     }
   },
   "predictions": [
     {
-      "text": "Another post.",
-      "gold": "your_label_here",
-      "predicted": "your_label_here"
+      "text": "There's only one English and one French voter out of 100 voters, I doubt that having the full English or full French support makes it a difference. Except if you're implying that the English voter would put Harry Kane in first place and put all the French players at the bottom of the list.",
+      "gold": "analysis",
+      "predicted": "hot_take"
     },
     {
-      "text": "Paste one post here. Keep the whole post \u2014 don't trim it to fit.",
-      "gold": "your_label_here",
-      "predicted": "your_label_here"
+      "text": "As a madrid fan I wanted him to ball out this WC (he did)",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "aight suck a dick now he and RM and La Liga apologized what more do they want, Mao harmed Chinese people more than Mbappe could ever hope to",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "His PR team was reaching out to the jury members just like the other nominees. There was a campaign, you just didn\u2019t see it.\n\nSource: The swedish jury member talked about it on his podcast",
+      "gold": "analysis",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I\u2019m hoping they win UCL this year so he can come back and get the PL record with spurs.",
+      "gold": "reaction",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Nearly every time I read Tottenham fans they are pure class. Hope you guys stay up and come back strong.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "The spin and shot, majestic",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Idk. Obviously a different team, but he was more likely to score when Joselu was on the pitch in 23/24, and he's not a striker like Kane. And I remember some of those World Cup goals coming when Kane was also high up the pitch. It's fairly normal to have one midfielder higher up the pitch and a double pivot lower, I don't think that's a massive tactical issue?",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Luke O'Nien has been robbed once again.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I love Lamine and I would've loved for him to win it, but Kane absolutely deserved it. I want Lamine to win his first when there is no doubt and the event is a formality. \n\nBut for Kane, the slander on his name for staying loyal to Tottenham and now getting recognize as one of the best as he has always been.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I have come to have mad respect for the man. Stayed at his boyhood club and essentially kept them competitive (with Son) far past the time he needed to be there. Eventually left when he almost had to and his game got arguably better. Has also said he\u2019d be keen to return to Tottenham AFAIK and honestly that\u2019s pretty cool that you\u2019d have that much passion for your boyhood club.",
+      "gold": "analysis",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Anyone who watches football can see that he is the most *complete* footballer on this list. From goal kicks to midfield, to striker, the guy is an absolute talent all over the pitch.\n\nWell deserved.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "China doesn't care. They have achieved the goal. All football players will now be briefed by their clubs to be extra careful with all things China. Players and clubs will self-censor, which is China's ultimate goal.",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I see why movies never portray china as villians like at all",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "There was an episode in the first half where Jude tackled Pedri just before him taking a shot. I instantly remembered that Pedri scored from very similar spot when Jude didn't track back in some recent el clasico. Really shows the change of character.",
+      "gold": "analysis",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Nah it was a smile of Schadenfreude for Mbappe",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "They think they can control the world like they do their own country. It's just a power move. And it usually works because the govt controls the economy and who they do business with. And everyone relies on China",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "How can Olise finish 9th? Can somebody explain? Meanwhile Measi finishes 5th playing in the MLS,ONLY because of his wc campaign. Joke honestly. I mean if you swap Olise with Messi,its a pretty fail standing for me",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I hope not for his safety.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Keepers almost always get shafted. Neuer was also the best player at the 2014 World Cup and won the the title, yet they still gave the Golden Ball to Messi who came in second with Argentina.",
+      "gold": "analysis",
+      "predicted": "reaction"
+    },
+    {
+      "text": "The kinda shot you take in real life and sail it 20 yards over the net lol",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "You do realise that it\u2019s contradictory because it\u2019s two different state entities commenting on the same topic on two different times, with this being the latest update?\n\nThe state media is driving the rage and doesn\u2019t care about diplomatic relations with western countries, whereas the foreign ministry of China can\u2019t afford to do that because it would damage diplomatic relations with France and Spain and made said comment much earlier.\n\nFuck the Torries, but this ain\u2019t some gotcha moment. They\u2019re two different public related comments made at two different times. It\u2019s actually mentioned at the end of the article you\u2019ve linked too and it\u2019s the older one of them two, which actually means that you haven\u2019t paid attention and rushed into a conclusion quickly.\n\nEdit: Additional context",
+      "gold": "analysis",
+      "predicted": "reaction"
+    },
+    {
+      "text": "I think their aim was to show its citizens that they will defend Mao (and by extension the CCP and China) and to show the world that even if you grovel like a money hungry whore, they'll say you're not hungry enough and make you grovel more. Because while we laugh at how incredulous their demands are, they were still met...\n\nReally the issue from La Liga is that if Mbappe & Co do NOT apologize, there are real financial ramifications to the league. While it won't affect players wages, people won't be happy with the league if headlines come out like \"10% of workers let go at X, Y, and Z clubs\" and they're all the lowest paid workers because of the butterfly effect of losing on China's money. Not only that, if China's money goes elsewhere, then those leagues get more competitive. La Liga is a farmer's league becomes more and more prevalent. La Liga loses more prestige. I'd argue that every top European flight has the real problem of dealing with the Premier League's financial might, so these theoretical types of losses cannot be taken trivially.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "He was this good at spurs...",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "A misstype, sure buddy.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "People can\u2019t seriously believe he didn\u2019t have a PR campaign for the Ballon d\u2019Or. \n\nHe absolutely did. Harry Kane\u2019s name was brought up so many times throughout the year, and I saw it all over social media. Reddit, Instagram, TikTok, Facebook, you name it.\n\n A lot of it was more subtle but his name was definitely being pushed in the media.\n\nAs a casual football fan who doesn\u2019t support any particular European club, I found it pretty obvious. What surprises me is how many people on Reddit act like they\u2019re experts at reading media narratives while insisting he had absolutely no PR backing. \n\nMaybe I\u2019m the one missing something here, but at this point I\u2019m genuinely wondering if some of these comments are even coming from real people or if I\u2019m just seeing a bunch of bots repeating the same thing.",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Well..., the opportunities for peaceful negotiations have run out; it is time for our beloved Leader Mbapp\u00e9 to determine the punishment for those nations that continue to refuse to recognise his supreme right to rule over them. \ud83e\udee1",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Agreed. I not a fan of England, Tottenham, and certainly not Bayern. But Harry has been quietly brilliant for so long and it looked like a comfortable lead until the World Cup semifinal. It would have been pity if Argentina being brilliant for 15 minutes spoiled the whole thing.",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Looks like they used non-copyrighted photos lol",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Mbappe should double down now and just go all in on it at this point",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "What can La Liga realistically do? Its not some random minnow making a fuss, its Real Madrid's star player. \n\nI doubt this will keep escalating simply because of the money involved but Mbappe/Madrid have all the leverage.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Cmon man you cannot be that gullible. Look at Croatia's list. That journalist literally only watched the world cup and nothing else. Its not that he was dumb. He literally didnt watch any part of the season \n\nOr in 2021, a journalist admitting he didnt really watch lewandowski so he based his vote off of his fifa card. It had low pace so he didnt vote lewa",
+      "gold": "analysis",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Yo that's a dumb FUCKING QUESTION!!!\n\nWhat do you get by moving from Spurs to Bayern?  WTF!!!",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Feels good to be correct once again. \n\nAnd fuck you to all those who said it's just a popularity contest.\n\nHe was ahead before the World Cup, and nobody managed to snatch it away from him at the World Cup.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Yer a winner, Harry!",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "China wants endless groveling.",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Le classy Redditor doesn't realize why fans hate rival players regardless of reason",
+      "gold": "hot_take",
+      "predicted": "reaction"
+    },
+    {
+      "text": "Couldn't be more deserved, H.",
+      "gold": "reaction",
+      "predicted": "analysis"
     }
   ]
 }
