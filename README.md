@@ -192,15 +192,27 @@ fit no label, were marked `skip` in `to_label.csv` and left out of
 
 <!-- Your starting model, your settings, and anything you changed and why. -->
 
-**Base model:**
+**Base model:** `distilbert-base-uncased`, trained on CPU (no GPU on this
+laptop).
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Settings:** 8 epochs, learning rate 2e-5, batch size 16, max length 128,
+seed 42.
 
-**Anything I changed from the defaults, and why:**
+**Anything I changed from the defaults, and why:** Epochs went from 3 to 8.
+With the default 3 epochs, 174 training posts gave only 33 gradient steps.
+Training loss stayed at 0.92, close to the 1.10 of pure guessing among three
+labels, and the model never predicted `analysis` at all: test accuracy
+0.526, macro F1 0.384, `analysis` F1 0.000. That is underfitting, not a hard
+boundary. At 8 epochs: accuracy 0.605, macro F1 0.595, and F1 of 0.533
+(`analysis`), 0.562 (`hot_take`) and 0.690 (`reaction`). The most confident
+third of predictions was right 75% of the time, against 33% for the least
+confident third. One run takes about 10 minutes on CPU. Nothing else
+changed.
 
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
+**Split sizes:** train 174 / val 38 / test 38. In the test split: 9
+`analysis`, 16 `hot_take`, 13 `reaction`. `analysis` is just above the
+roughly 8-post line, so a single post moves its F1 a lot, and I expect it to
+be the jumpiest number across seeds next unit.
 
 
 
