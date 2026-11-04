@@ -42,7 +42,13 @@
 <!-- Your community, and what your classifier sorts posts into. Three or four
      sentences. -->
 
-
+TakeMeter reads comments from r/soccer, the main general football subreddit,
+where every big moment (a goal clip, an award, a controversy) gets a thread of
+hundreds of replies. It sorts each comment into `analysis` (a point backed by
+a specific, checkable observation), `hot_take` (a confident opinion with no
+real support) or `reaction` (an in-the-moment emotional response). The goal is
+to pull the handful of posts that actually argue something out of a thread
+that is mostly noise.
 
 ---
 
@@ -108,19 +114,33 @@ immediate response to the event, label it `reaction`.
 <!-- Where you collected from, how you labelled, your counts, and three hard
      cases. -->
 
-**Where the posts came from:**
+**Where the posts came from:** Comments from five r/soccer threads, October
+2026: Yamal's goal against Real Betis (fan angle), China rejecting Mbappé and
+Real Madrid's apologies, Harry Kane winning the 2026 Ballon d'Or, Ronaldo's
+2008 season winning the fan-voted "BOAT" award, and Bellingham's skill in the
+build-up to a Real Madrid goal. I saved each thread's JSON from the browser
+and `collect.py` pulled out every comment of 4+ words (dropping deleted posts
+and AutoModerator), giving 1,857 posts in `raw_posts.csv`. Because the median
+post is 13 words and `analysis` lives in the long tail, I built the labelling
+pool from every post of 35+ words plus a random sample of shorter ones, then
+added the longest argumentative posts from the Ronaldo and Bellingham threads
+when `analysis` came up short of criterion 3.
 
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** I labelled the first 20 usable posts cold (note
+`cold`). The remaining 230 were pre-labelled by Claude from my definitions and
+decision rule (note `pre-labelled by Claude`; 29 close calls are marked
+`borderline`). Posts that were off-topic politics with no football angle, or
+fit no label, were marked `skip` in `to_label.csv` and left out of
+`labels.csv`. See the disclosure under **How I Used AI**.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `hot_take` | 108 | 43% |
+| `reaction` | 85 | 34% |
+| `analysis` | 57 | 23% |
+| **Total** | 250 | 100% |
 
 **Three hard cases**
 
@@ -128,25 +148,43 @@ Say so plainly — the disclosure is required, not penalised. -->
      been, and what you chose. These are worth more than the easy 190. -->
 
 **1.**
-> *The post:*
+> *The post:* "Yes but its getting increasingly more difficult as he gets
+> older. In modern time the oldest player was 36 and it was Messi. The second
+> oldest was Benzema at 34. Kane is 33 so there are realistically 1 or 2 more
+> seasons ... where he could win it."
 >
-> *Could have been:*
+> *Could have been:* `analysis` or `hot_take`
 >
-> *I chose, because:*
+> *I chose, because:* I labelled it `hot_take` cold, reading it as a
+> prediction about Kane. Under my own decision rule it is arguably `analysis`:
+> the winners' ages are checkable and the post uses them to support the
+> claim. This is the clearest case where I applied my rule loosely, and it is
+> exactly the boundary criterion 4 measures.
 
 **2.**
-> *The post:*
+> *The post:* "I will always die on the hill that Courtois should have won
+> over Benzema. For every Benzema goal there were 3-4 key defenses by
+> Courtois throughout that season."
 >
-> *Could have been:*
+> *Could have been:* `analysis` or `hot_take`
 >
-> *I chose, because:*
+> *I chose, because:* `analysis` (pre-labelled, marked borderline). The "3-4
+> key defenses per goal" is a specific, countable comparison tied directly
+> to the claim, even though it is probably exaggerated. My rule asks whether
+> the evidence is checkable and linked, not whether it is right.
 
 **3.**
-> *The post:*
+> *The post:* "I love Lamine and I would've loved for him to win it, but Kane
+> absolutely deserved it. ... the slander on his name for staying loyal to
+> Tottenham and now getting recognize as one of the best as he has always
+> been."
 >
-> *Could have been:*
+> *Could have been:* `reaction` or `hot_take`
 >
-> *I chose, because:*
+> *I chose, because:* `reaction` (cold). It is a judgment ("Kane absolutely
+> deserved it"), but the post is mostly an emotional response to the result
+> being announced, not an argument for the judgment. Posts like this, a
+> verdict wrapped in feelings, are where `reaction` and `hot_take` blur.
 
 ---
 
@@ -179,17 +217,36 @@ of next unit's variance. -->
 
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* A script to pull every comment from a Reddit thread
+  into a CSV for labelling.
+- *What came back:* `collect.py`, using Reddit's public `.json` endpoint. On
+  the first run Reddit answered with 403 Blocked.
+- *What I changed:* Instead of trying to get around the block, I saved each
+  thread's `.json` page from my own browser, and the script was changed to
+  read saved files. It also filters out deleted posts, AutoModerator and
+  comments under 4 words. One goal-clip thread was mostly reactions, so I
+  added more argumentative threads.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Pre-labels for the posts after my 20 cold ones, using
+  my definitions.
+- *What came back:* Before labelling, Claude pointed out that several of my
+  cold labels didn't follow my own written decision rule. I had called a post
+  with checkable age stats `hot_take`, and posts like "you can tell it means
+  a lot to him" `analysis`. It asked whether to follow the rule as written or
+  my cold habits.
+- *What I changed:* I had it follow the written rule strictly and kept my
+  cold labels unchanged as an honest record. The first pass left `analysis`
+  at 40, under criterion 3's floor of 45, so I collected two more threads,
+  and the strongest argumentative posts from them brought it to 57.
 
-**Pre-labelling disclosure:**
+**Pre-labelling disclosure:** 20 of the 250 posts were labelled cold by me
+(`note = cold`). The other 230 were pre-labelled by Claude (Opus 5.5) from the
+definitions and decision rule above, each marked `pre-labelled by Claude` in
+the `note` column, with 29 close calls marked `borderline`. Because of time, I
+did not read and correct every pre-label before this training run. Where I
+change one later, its note becomes `pre-labelled by Claude, corrected`.
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 
