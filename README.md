@@ -411,9 +411,12 @@ accuracy by 2.6 points, and accuracy moved 10.5 points between seeds. With 9
 `analysis` posts per test split, one post moves its F1 by about 0.06, so
 0.533 → 0.588 across seeds is a single post. `reaction` swinging from 0.690
 to 0.417 is the same story: 13 test posts, and on seed 7 eight of them were
-called `hot_take`. That second leak (18 `reaction` → `hot_take` across seeds)
-is where `reaction` blurs into `hot_take` when a reaction carries a verdict
-("Couldn't be more deserved, H."), which is my hard case 3 again.
+called `hot_take`. Unlike the `analysis` boundary, `hot_take` ↔ `reaction`
+fails in both directions: 18 one way and 13 the other across seeds, and 3 vs
+5 on seed 42, which the notebook calls "roughly symmetric". That makes it a
+**genuinely hard pair** rather than a one-sided labelling habit. A reaction
+that carries a verdict ("Couldn't be more deserved, H.") is both things at
+once, which is my hard case 3 again.
 
 ---
 
