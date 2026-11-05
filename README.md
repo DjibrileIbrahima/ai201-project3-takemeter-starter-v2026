@@ -476,9 +476,36 @@ once, which is my hard case 3 again.
 
 ## The Improvement
 
-**What I changed:**
+**What I changed:** I relabelled the `analysis`/`hot_take` boundary under
+one test, applied the same way everywhere: *is there a checkable fact, and
+does it carry the argument?* That is my own written rule, and it matches the
+staff taxonomy's rule 1. I re-checked all 20 cold labels and the 29 rows
+marked `borderline`, and changed 16:
 
-**Which diagnosis pointed at it:**
+- 3 moved to `analysis` because a fact really carries the claim: the ages of
+  past winners, the Özil precedent, Mao calling himself a dictator.
+- 11 moved from `analysis` to `hot_take`: no checkable fact, or a number used
+  as decoration on a conclusion already reached. One example is "3-4 key
+  defenses per Benzema goal" (my hard case 2, now relabelled).
+- 2 moved from `analysis` to `reaction`: "you can tell it means a lot to
+  him" and "the kinda shot you'd sail 20 yards over".
+
+The changed rows are noted `cold, relabelled in unit 6` or `pre-labelled by
+Claude, corrected`. New counts: `analysis` 47, `hot_take` 116 (46%),
+`reaction` 87. Criterion 3 still holds, but `analysis` now sits just above
+its floor of 45. Nothing else changed: same posts, same settings, same seeds.
+Because the split is stratified on label, the test posts per seed shift a
+little, so before/after are not scored on identical test sets.
+
+**Which diagnosis pointed at it:** Criterion 4. The confusion matrix showed
+`analysis` → `hot_take` errors running one way (13 vs 5 across seeds), the
+signature of a boundary applied inconsistently rather than one that is
+inherently hard. My own cold labels contained clear rule-breaks in both
+directions. On the staff set I made the same mistake: I labelled "Times are
+down about 3% since the shoe rules changed, so obviously the shoes are the
+whole story" as `analysis`, when the staff taxonomy gives almost that exact
+post as its example of `hot_take`. I was counting a number as evidence even
+when it did no work in the argument.
 
 ### Run Log — After
 
