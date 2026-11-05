@@ -509,20 +509,50 @@ when it did no work in the argument.
 
 ### Run Log — After
 
+Same settings (8 epochs, lr 2e-5, batch 16, CPU). Test split is now 38
+posts per seed: 7 `analysis`, 18 `hot_take`, 13 `reaction`.
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.65 every seed | 0.737 | 0.658 | 0.684 | MET (was MISSED) |
+| 2. Per-label F1 | `analysis` ≥ 0.60; `hot_take`, `reaction` ≥ 0.55 | a 0.615 · h 0.750 · r 0.783 | a 0.000 · h 0.698 · r 0.769 | a 0.462 · h 0.700 · r 0.783 | MISSED (`analysis` only) |
+| 3. Balance | no label > 50%, every label ≥ 45 | 46% max, 47 min | same data | same data | MET |
+| 4. `analysis` → `hot_take` | < 1 in 4 true `analysis` | 3 / 7 | 7 / 7 | 4 / 7 | MISSED (worse) |
+| 5. Confidence gap | top third ≥ 0.15 above bottom third | 0.833 vs 0.500 (+0.33) | 0.917 vs 0.250 (+0.67) | 0.750 vs 0.750 (+0.00) | MISSED (was MET) |
+
+Macro F1: 0.716 / 0.489 / 0.648 (before: 0.595 / 0.489 / 0.558). Accuracy
+spread across seeds: 0.079 (before: 0.105).
+
+Summed confusion matrix, all three seeds after:
+
+| true \ predicted | analysis | hot_take | reaction |
+|---|---|---|---|
+| **analysis** | 7 | 14 | 0 |
+| **hot_take** | 5 | 44 | 5 |
+| **reaction** | 0 | 11 | 28 |
 
 **Did it help, and how do I know:**
 
 <!-- If it didn't, say so. Relabelling that didn't help is a genuinely
      interesting result and earns full credit. -->
 
+Overall yes, but not where I aimed it. Accuracy now clears 0.65 on every
+seed, and `hot_take` and `reaction` F1 clear their bars on every seed.
+`hot_take` ↔ `reaction` errors fell from 31 to 16 across seeds, and the
+seed-to-seed spread narrowed. But the boundary I was trying to fix got
+**worse**. On seed 7 the model never predicted `analysis` at all (F1 0.00,
+all 7 called `hot_take`), and `analysis` → `hot_take` is now 14 of 21
+across seeds, against 13 of 27 before.
 
+I think this is why. Making the rule stricter moved 11 posts out of
+`analysis` and into `hot_take`. That left `analysis` with only 47 examples
+(about 33 in training) and made `hot_take` an even bigger default (46%).
+Part of the accuracy gain is just that the test split now holds more
+`hot_take` posts (18 of 38), and those are easy to get right by leaning that
+way. Criterion 5 also fell: on seed 2024 the confident and unsure thirds
+were equally accurate. The labels are cleaner, but the label I care about
+is now too thin to learn. So the relabel fixed the consistency problem
+without fixing the data problem behind it.
 
 ---
 
@@ -530,11 +560,32 @@ when it did no work in the argument.
 
 <!-- For each criterion still missed: what you'd do, and why you stopped. -->
 
+**Criterion 2 (`analysis` F1) and criterion 4 (`analysis` → `hot_take`).**
+Both come down to `analysis` being too rare. 47 examples, 7 in each test
+split, and one seed where the model gave up on the label entirely. The fix
+I'd make next is more `analysis` data, not more relabelling: another 40-50
+posts from tactical and match-analysis threads (r/soccer post-match threads,
+or club subs like r/reddevils), labelled under the same strict rule. Class
+weights in training would be a quicker second option, so that missing an
+`analysis` post costs more than missing a `hot_take`. I stopped because
+each three-seed run is about 30 minutes on CPU, and collecting and labelling
+another batch didn't fit in the time I had.
 
+**Criterion 5 (confidence gap).** It missed on one seed, where the gap was
+exactly 0.00. With 12 posts per third, a gap of 0.15 is about two posts, so
+this criterion is very sensitive to the split. I'd test it on a bigger test
+set before trusting either the earlier MET or this MISSED.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
 <!-- Two sentences. Your confusion matrix is the evidence. -->
+
+I meant `analysis` to mean "an argument that a checkable fact carries", but
+the model learned something closer to "long and argumentative, otherwise
+`hot_take`". `analysis` is never confused with `reaction` (0 both ways), yet
+14 of 21 real `analysis` posts were called `hot_take`. Without enough
+examples, the difference between "uses a fact" and "just argues" is the one
+thing it can't see.
 
 
 
