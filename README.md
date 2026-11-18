@@ -389,10 +389,6 @@ is whether the argument is backed by evidence.
      have that can tell a LABELLING problem from a MODEL problem, and this
      section is graded on whether you used it that way. -->
 
-<!-- TODO: add the agreement-report evidence once data/staff_labels.csv
-     arrives and agreement.py has run. The diagnoses below use the evidence
-     available so far. -->
-
 **Criterion 4 (`analysis` → `hot_take`): a boundary applied inconsistently.**
 The errors run one way: 13 `analysis` → `hot_take` against 5 the other way
 across seeds. A genuinely hard pair would blur in both directions. My own
@@ -405,6 +401,16 @@ pre-labelled under a stricter reading of the same rule. So the training data
 holds two versions of the `analysis` boundary, and the model learned roughly
 "long and argumentative" rather than "backed by evidence".
 
+The agreement report confirms that this is a labelling problem and not a
+model problem. I matched staff on 27 of 30 posts, and **all three misses sit
+on this exact boundary**, under a rule (staff rule 1, "does the fact carry
+the argument?") that is the same test as my own. Those misses run in both
+directions. Twice I called a post with a load-bearing number `hot_take`, and
+once I called a post with a decorative number `analysis`. All three are pile
+(a), meaning the rule covered the case and I applied it loosely. If I
+applied a written rule two ways on 30 posts, I almost certainly did the same
+across my 250.
+
 **Criteria 1 and 2 (accuracy, per-label F1): too little data for a stable
 measure, on top of the boundary above.** With 38 test posts, one post moves
 accuracy by 2.6 points, and accuracy moved 10.5 points between seeds. With 9
@@ -416,7 +422,11 @@ fails in both directions: 18 one way and 13 the other across seeds, and 3 vs
 5 on seed 42, which the notebook calls "roughly symmetric". That makes it a
 **genuinely hard pair** rather than a one-sided labelling habit. A reaction
 that carries a verdict ("Couldn't be more deserved, H.") is both things at
-once, which is my hard case 3 again.
+once, which is my hard case 3 again. The agreement report supports this from
+the other side. I matched staff on every post where `reaction` was involved,
+so I apply the `reaction`/`hot_take` boundary consistently. The confusion
+there comes from the pair being hard and the data being small, not from my
+labels.
 
 ---
 
@@ -428,7 +438,7 @@ once, which is my hard case 3 again.
      data/staff_taxonomy.md, not your own — so every argument below is made
      from those definitions and those decision rules. -->
 
-**Agreement rate:** ___ / 30 = ___%
+**Agreement rate:** 27 / 30 = 90%
 
 <!-- Nobody grades this number. A 60% who argues every disagreement from the
      stated rules beats a 95% who wrote "staff was right" nine times. Several
@@ -451,25 +461,71 @@ once, which is my hard case 3 again.
      what you did across your own 200. -->
 
 **1.**
-> *The post:*
+> *The post:* "The 10K route was remeasured in 2021 and came out 60 metres
+> long. Everyone comparing PBs from before and after that is comparing two
+> different races, which is about 12 seconds at club pace."
 >
-> *Staff said / I said:*
+> *Staff said / I said:* `analysis` / `hot_take`
 >
-> *My call, and why:*
+> *My call, and why:* Staff is right. The remeasurement is a dated, checkable
+> fact, and the whole conclusion (before and after PBs aren't comparable,
+> worth about 12 seconds) follows directly from it. Remove the 60 metres and
+> there is no argument left, so under rule 1 the fact is load-bearing. I
+> think the flat, confident tone ("Everyone comparing…") pushed me toward
+> `hot_take`, but tone is not part of the rule.
 >
-> *Which pile:*
+> *Which pile:* (a). The rule covered it and I applied it loosely.
 
 **2.**
-> *The post:*
+> *The post:* "Three of us ran the same session on the same day, different
+> shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes
+> do nothing, but whatever they do was smaller than the noise between three
+> people."
 >
-> *Staff said / I said:*
+> *Staff said / I said:* `analysis` / `hot_take`
 >
-> *My call, and why:*
+> *My call, and why:* Staff is right, though this is the closest of the
+> three. I discounted it because it's an n=3 anecdote. But the definition
+> asks for a specific, checkable fact ("a time" is listed by name), not a
+> good sample, and the conclusion is drawn from that number and scoped to
+> it ("smaller than the noise between three people"). The fact does the
+> work, so rule 1 says `analysis`. The writer even hedges, which is the
+> opposite of a `hot_take`'s unsupported confidence. I was judging how good
+> the evidence was, and the rule only asks whether the evidence is carrying
+> the argument.
 >
-> *Which pile:*
+> *Which pile:* (a). I added a strength-of-evidence test the rule doesn't
+> contain.
+
+**3.**
+> *The post:* "Times are down about 3% since the shoe rules changed, so
+> obviously the shoes are the whole story and the sport has a problem."
+>
+> *Staff said / I said:* `hot_take` / `analysis`
+>
+> *My call, and why:* Staff is right. This is almost word for word the
+> taxonomy's own `hot_take` example for rule 1. The 3% is real, but
+> "obviously… the whole story" and "the sport has a problem" go far beyond
+> what one correlation can carry. The number decorates a conclusion the
+> writer had already reached. I counted the presence of a number as
+> evidence.
+>
+> *Which pile:* (a). The rule covered it, with a worked example, and I
+> applied it loosely.
 
 **What the pattern in my disagreements tells me:**
 
+All three disagreements are on the `analysis`/`hot_take` boundary, none on
+either boundary involving `reaction`, and all three are pile (a). I didn't
+find a gap in the rules, and none of my readings survives as a defensible
+win. The errors also aren't a consistent bias in one direction: I was too
+strict twice (posts 1 and 2) and too lenient once (post 3). In each case I
+was reacting to the surface of the post (confident tone, small sample, a
+visible number) instead of asking the one question the rule asks, which is
+whether the fact carries the argument. That is exactly the inconsistency
+behind my Criterion 4 diagnosis. It's why I made this boundary the target of
+the improvement, and it's a warning that my 250 labels very likely contain
+the same both-ways noise.
 
 
 ---
